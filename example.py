@@ -29,7 +29,13 @@ def main():
         
         try:
             result = run_agent(query)
-            print(f"\nAnswer: {result['output']}")
+            
+            # Extract the final answer from the messages
+            if 'messages' in result:
+                final_message = result['messages'][-1]
+                print(f"\nAnswer: {final_message.content}")
+            else:
+                print(f"\nAnswer: {result}")
         except Exception as e:
             print(f"Error: {str(e)}")
             if "ANTHROPIC_API_KEY" in str(e):

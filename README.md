@@ -88,22 +88,19 @@ python example.py
 
 ## Adding Custom Tools
 
-You can easily extend the agent with custom tools:
+You can easily extend the agent with custom tools using the `@tool` decorator:
 
 ```python
-from langchain.tools import Tool
+from langchain_core.tools import tool
 
+@tool
 def my_custom_function(input_str: str) -> str:
+    """Description of what your tool does."""
     # Your custom logic here
     return result
 
-custom_tool = Tool(
-    name="MyCustomTool",
-    func=my_custom_function,
-    description="Description of what your tool does"
-)
-
-# Add to the tools list in create_agent()
+# Add your tool to the tools list in create_agent()
+# tools = [get_current_time, calculate, my_custom_function]
 ```
 
 ## Environment Variables
