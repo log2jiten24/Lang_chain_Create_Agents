@@ -2,6 +2,8 @@
 
 A comprehensive Python project demonstrating sophisticated LLM chat applications using LangChain and Anthropic's Claude model. This project showcases advanced techniques including prompt engineering, conversational memory, streaming responses, and practical implementations for various use cases.
 
+This repository is for creating agents using LangChain and Anthropic API key.
+
 ## Features
 
 - 🤖 **Advanced Prompt Engineering**: System and human message templates for different domains
@@ -21,7 +23,12 @@ A comprehensive Python project demonstrating sophisticated LLM chat applications
 
 ## Installation
 
-1. **Clone or download this repository**
+1. **Clone this repository**
+
+```bash
+git clone https://github.com/log2jiten24/Lang_chain_Create_Agents.git
+cd Lang_chain_Create_Agents
+```
 
 2. **Create and activate a virtual environment**:
 
@@ -43,16 +50,7 @@ pip install -r requirements.txt
 
 4. **Configure environment variables**:
 
-```bash
-# Copy the example file
-cp .env.example .env
-
-# Edit .env and add your API keys
-# Windows: notepad .env
-# macOS/Linux: nano .env
-```
-
-Add your API keys to the `.env` file:
+Create a `.env` file in the project root and add your API keys:
 ```
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
 LANGSMITH_API_KEY=your_langsmith_api_key_here  # Optional
@@ -88,14 +86,14 @@ The notebook is organized into 12 comprehensive sections:
 ## Project Structure
 
 ```
-Lang_Chain_practice_Project/
-├── langchain_chat_application.ipynb  # Main Jupyter notebook
-├── requirements.txt                  # Python dependencies
-├── .env.example                      # Environment variable template
-├── .env                              # Your API keys (do not commit!)
-├── .gitignore                        # Git ignore rules
-├── CLAUDE.md                         # Developer documentation
-└── README.md                         # This file
+Lang_chain_Create_Agents/
+├── langchain_chat_application.ipynb              # Main tutorial notebook
+├── langchain_chat_models_prompt_templates.ipynb  # Learning-focused notebook
+├── requirements.txt                              # Python dependencies
+├── .env                                          # Your API keys (do not commit!)
+├── .gitignore                                    # Git ignore rules
+├── CLAUDE.md                                     # Developer documentation
+└── README.md                                     # This file
 ```
 
 ## Key Components
@@ -261,10 +259,10 @@ This project is provided as-is for educational and practice purposes.
 ## Acknowledgments
 
 Built with:
-- LangChain (0.3.13)
-- LangChain Core (0.3.28)
-- LangChain Anthropic (0.3.3)
-- Anthropic SDK (0.39.0)
+- LangChain (1.0.0)
+- LangChain Core (1.0.0)
+- LangChain Anthropic (1.0.0)
+- Anthropic SDK (0.71.0)
 - Jupyter Notebook
 
 ---
