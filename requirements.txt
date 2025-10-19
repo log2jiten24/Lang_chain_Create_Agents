@@ -1,3 +1,20 @@
 langchain>=0.1.0
 langchain-anthropic>=0.1.0
 python-dotenv>=1.0.0
+# Core LangChain libraries
+langchain>=0.3.13
+langchain-core>=0.3.30
+langchain-anthropic>=0.3.3
+
+# Anthropic Claude API
+anthropic>=0.41.0
+
+# Environment variable management
+python-dotenv==1.0.1
+
+# Jupyter notebook support
+jupyter==1.1.1
+ipykernel==6.29.5
+
+# Additional utilities
+requests==2.32.3
