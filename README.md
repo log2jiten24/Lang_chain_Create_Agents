@@ -148,7 +148,20 @@ LANGSMITH_API_KEY=your_langsmith_api_key_here  # Optional
 jupyter notebook
 ```
 
-Open `langchain_chat_application.ipynb` and run the cells sequentially.
+Navigate to the `Jupyter_Lang_Chain_Notebook/` folder and open `langchain_chat_application.ipynb`, then run the cells sequentially.
+
+### Running the Python Agent
+
+```bash
+# Run the main agent with a test query
+python Python_Examples_Agent/agent.py
+
+# Run all examples
+python Python_Examples_Agent/example.py
+
+# Run the test suite
+python Python_Examples_Agent/test_agent.py
+```
 
 ### Notebook Sections
 
@@ -171,42 +184,71 @@ The notebook is organized into 12 comprehensive sections:
 
 ```
 Lang_chain_Create_Agents/
-├── langchain_chat_application.ipynb              # Main tutorial notebook
-├── langchain_chat_models_prompt_templates.ipynb  # Learning-focused notebook
-├── requirements.txt                              # Python dependencies
-├── .env                                          # Your API keys (do not commit!)
-├── .gitignore                                    # Git ignore rules
-├── CLAUDE.md                                     # Developer documentation
-└── README.md                                     # This file
+├── Jupyter_Lang_Chain_Notebook/           # Jupyter notebooks for tutorials
+│   ├── langchain_chat_application.ipynb              # Main tutorial (12 sections)
+│   └── langchain_chat_models_prompt_templates.ipynb  # Learning-focused notebook
+├── Python_Examples_Agent/                 # Python agent implementations
+│   ├── agent.py                                      # ReAct agent with tools
+│   ├── example.py                                    # Usage examples
+│   └── test_agent.py                                 # Test suite
+├── .env                                   # Your API keys (do not commit!)
+├── .env.example                           # Environment variable template
+├── .gitignore                             # Git ignore rules
+├── CLAUDE.md                              # Developer documentation
+├── IMPLEMENTATION_NOTES.md                # Agent implementation notes
+├── README.md                              # This file
+└── requirements.txt                       # Python dependencies
 ```
 
 ## Key Components
 
-### ChatAnthropic Model
+### 1. Jupyter Notebooks (Tutorial & Learning)
 
+#### ChatAnthropic Model
 The primary interface to Claude models. Configuration options:
 - `model`: Choose from Claude models (default: `claude-3-5-sonnet-20241022`)
 - `temperature`: Control randomness (0.0-1.0)
 - `max_tokens`: Maximum response length
 
-### Prompt Templates
-
+#### Prompt Templates
 Three main template patterns:
 1. **Simple templates** for direct interactions
 2. **Memory-enabled templates** with `MessagesPlaceholder`
 3. **Domain-specific templates** with customized system messages
 
-### Memory Management
-
+#### Memory Management
 - **InMemoryChatMessageHistory**: Stores conversation history per session
 - **RunnableWithMessageHistory**: Maintains context across turns
 - **Session IDs**: Isolate different conversation threads
 
-### Chain Composition
-
+#### Chain Composition
 LangChain's pipe (`|`) operator for building pipelines:
 ```python
 chain = prompt | model | output_parser
+```
+
+### 2. Python Agent (ReAct Framework)
+
+#### Agent Architecture
+- **Framework**: ReAct (Reasoning and Acting)
+- **Model**: Claude 3.5 Sonnet
+- **Tools**:
+  - `get_current_time()` - Returns current date/time
+  - `calculate()` - Performs mathematical calculations
+
+#### Agent Features
+- Autonomous tool selection based on query
+- Multi-step reasoning with tool chaining
+- Error handling and input validation
+- Extensible tool system
+
+#### Example Agent Usage
+```python
+from Python_Examples_Agent.agent import run_agent
+
+result = run_agent("What is the current time and what is 25 * 4?")
+print(result['messages'][-1].content)
+# Output: The current time is 2025-10-20 00:26:32, and 25 * 4 = 100.
 ```
 
 ## Example Use Cases

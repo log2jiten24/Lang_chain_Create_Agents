@@ -37,7 +37,27 @@ jupyter kernelspec list
 pip install -r requirements.txt --upgrade
 ```
 
-## Notebook Structure
+## Project Structure
+
+```
+Lang_chain_Create_Agents/
+├── Jupyter_Lang_Chain_Notebook/
+│   ├── langchain_chat_application.ipynb
+│   └── langchain_chat_models_prompt_templates.ipynb
+├── Python_Examples_Agent/
+│   ├── agent.py
+│   ├── example.py
+│   └── test_agent.py
+├── .env (not committed)
+├── .env.example
+├── .gitignore
+├── CLAUDE.md
+├── IMPLEMENTATION_NOTES.md
+├── README.md
+└── requirements.txt
+```
+
+## Jupyter Notebooks (`Jupyter_Lang_Chain_Notebook/`)
 
 ### langchain_chat_application.ipynb
 The main tutorial notebook with 12 sections covering end-to-end LangChain implementation:
@@ -54,6 +74,29 @@ Focused learning notebook with detailed instructional markdown before each cell 
 - Expected outputs and use cases
 - Best practices and when to apply patterns
 - Step-by-step task breakdowns
+
+## Python Agent Examples (`Python_Examples_Agent/`)
+
+### agent.py
+Main agent implementation using LangChain's ReAct framework:
+- **Tools**: `get_current_time()` and `calculate()` for math operations
+- **Model**: Claude 3.5 Sonnet (`claude-3-5-sonnet-20241022`)
+- **Pattern**: Uses `create_react_agent` from langgraph.prebuilt
+- **Usage**: Can be run standalone or imported as module
+
+### example.py
+Demonstrates practical agent usage with 4 examples:
+1. Current time query
+2. Mathematical calculation (123 * 456)
+3. Square root calculation
+4. Combined time and division query
+
+### test_agent.py
+Test suite for validating agent functionality:
+- Tool availability tests
+- Agent creation tests
+- Query execution tests
+- Error handling validation
 
 ## Architecture
 
