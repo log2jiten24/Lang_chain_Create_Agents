@@ -11,7 +11,8 @@ A comprehensive LangChain practice project demonstrating sophisticated LLM chat 
 ```bash
 # Create and activate virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# On Windows: venv\Scripts\activate
+# On Linux/Mac: source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -24,17 +25,18 @@ pip install -r requirements.txt
 ## Development Commands
 
 ```bash
-# Start Jupyter notebook server
-jupyter notebook
+# Jupyter Notebook
+jupyter notebook                                     # Start notebook server
+python -m ipykernel install --user --name=langchain-env  # One-time kernel setup
+jupyter kernelspec list                              # List available kernels
 
-# Install kernel for virtual environment (one-time setup)
-python -m ipykernel install --user --name=langchain-env
+# Python Agent
+python Python_Examples_Agent/agent.py                # Run standalone agent example
+python Python_Examples_Agent/example.py              # Run all usage examples
+python Python_Examples_Agent/test_agent.py           # Run test suite
 
-# List active Jupyter kernels
-jupyter kernelspec list
-
-# Update dependencies after requirements.txt changes
-pip install -r requirements.txt --upgrade
+# Dependencies
+pip install -r requirements.txt --upgrade            # Update dependencies
 ```
 
 ## Project Structure
@@ -81,7 +83,8 @@ Focused learning notebook with detailed instructional markdown before each cell 
 Main agent implementation using LangChain's ReAct framework:
 - **Tools**: `get_current_time()` and `calculate()` for math operations
 - **Model**: Claude 3.5 Sonnet (`claude-3-5-sonnet-20241022`)
-- **Pattern**: Uses `create_react_agent` from langgraph.prebuilt
+- **Pattern**: Uses `create_react_agent` from `langgraph.prebuilt`
+- **Security**: Calculator uses AST parsing (not eval) to safely evaluate math expressions
 - **Usage**: Can be run standalone or imported as module
 
 ### example.py
@@ -97,6 +100,7 @@ Test suite for validating agent functionality:
 - Agent creation tests
 - Query execution tests
 - Error handling validation
+- Run with: `python Python_Examples_Agent/test_agent.py`
 
 ## Architecture
 
@@ -148,6 +152,20 @@ RunnableWithMessageHistory(
 - Exponential backoff: `2 ** retry_count` seconds
 - Returns dict with `{success, response, error, retry_count}`
 - Handles rate limits, validation errors, and API errors separately
+
+## Dependencies
+
+**Core packages** (from requirements.txt):
+- `langchain>=0.3.13` - Core LangChain library
+- `langchain-core>=0.3.30` - LangChain core abstractions
+- `langchain-anthropic>=0.3.3` - Anthropic integration
+- `anthropic>=0.41.0` - Anthropic SDK
+- `langgraph` - Required for `create_react_agent` (implicitly installed)
+- `python-dotenv==1.0.1` - Environment variable management
+- `jupyter==1.1.1` - Notebook interface
+- `ipykernel==6.29.5` - Jupyter kernel
+
+**Note**: `langgraph.prebuilt.create_react_agent` is the recommended agent pattern in LangChain 1.0+. The old `AgentExecutor` pattern from earlier versions has been replaced.
 
 ## Model Configuration
 
@@ -220,3 +238,20 @@ except Exception as e:
     else:
         return f"Error: {str(e)}"
 ```
+
+### Adding Custom Tools to Agent
+```python
+from langchain_core.tools import tool
+
+@tool
+def custom_tool(input_param: str) -> str:
+    """Clear description of what the tool does. The agent uses this description."""
+    # Implementation
+    return result
+
+# In create_agent() function in agent.py:
+tools = [get_current_time, calculate, custom_tool]
+agent_executor = create_react_agent(llm, tools)
+```
+
+**Important**: Tool docstrings are critical - the agent reads them to decide when to use each tool.
