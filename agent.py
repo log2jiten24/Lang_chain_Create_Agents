@@ -8,6 +8,8 @@ import os
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
+# Note: This import is deprecated but will continue to work
+# The suggested replacement doesn't have compatible API yet
 from langgraph.prebuilt import create_react_agent
 
 # Load environment variables
@@ -75,14 +77,14 @@ def create_agent():
     
     # Initialize the Claude model
     llm = ChatAnthropic(
-        model="claude-3-sonnet-20240229",
+        model="claude-3-5-sonnet-20241022",
         anthropic_api_key=api_key,
         temperature=0.7
     )
     
     # Define tools for the agent
     tools = [get_current_time, calculate]
-    
+
     # Create the agent using langgraph's create_react_agent
     agent_executor = create_react_agent(llm, tools)
     
