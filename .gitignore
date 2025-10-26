@@ -40,3 +40,10 @@ venv.bak/
 # OS
 .DS_Store
 Thumbs.db
+
+# Data directories (vector stores, sample documents)
+data_storage/
+sample_data/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
