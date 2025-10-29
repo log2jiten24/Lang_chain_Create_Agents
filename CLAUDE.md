@@ -35,6 +35,14 @@ python Python_Examples_Agent/agent.py                # Run standalone agent exam
 python Python_Examples_Agent/example.py              # Run all usage examples
 python Python_Examples_Agent/test_agent.py           # Run test suite
 
+# Copilot CLI (Command-Line Interface)
+python Python_Examples_Agent/cli.py                  # Interactive mode (default)
+python Python_Examples_Agent/cli.py "query"          # One-shot query
+python Python_Examples_Agent/cli.py --help           # Show CLI help
+python Python_Examples_Agent/cli.py --interactive    # Force interactive mode
+python Python_Examples_Agent/cli.py --verbose "query" # Verbose output
+python Python_Examples_Agent/test_cli.py             # Run CLI test suite
+
 # Python RAG Agent (Document Q&A)
 python Python_RAG_Agent/Example_Usage.py             # Create/load vector store and test queries
 # On first run: Creates vector store from PDFs in sample_data/
@@ -55,8 +63,10 @@ Lang_chain_Create_Agents/
 │   └── RAG_Data_Ingestion_Vector_DB_Pipeline.ipynb
 ├── Python_Examples_Agent/                        # ReAct agent with tools
 │   ├── agent.py                                  # Main agent implementation
+│   ├── cli.py                                    # Command-line interface
 │   ├── example.py                                # Usage examples
-│   └── test_agent.py                             # Test suite
+│   ├── test_agent.py                             # Agent test suite
+│   └── test_cli.py                               # CLI test suite
 ├── Python_RAG_Agent/                             # RAG system for document Q&A
 │   ├── data_loader.py                            # PDF/text document loaders
 │   ├── Embeddings.py                             # HuggingFace embeddings manager
@@ -119,6 +129,50 @@ Test suite for validating agent functionality:
 - Query execution tests
 - Error handling validation
 - Run with: `python Python_Examples_Agent/test_agent.py`
+
+### cli.py
+Command-line interface for interacting with the LangChain agent:
+- **Interactive Mode**: Continuous conversation loop with the agent
+- **One-Shot Mode**: Execute single queries and exit
+- **Configuration Options**: Model selection, temperature control, verbose output
+- **Built-in Commands**: `help`, `history`, `clear`, `exit`/`quit`/`q`
+- **Session History**: Track and display conversation history
+- **Error Handling**: Graceful handling of API errors and user interrupts
+
+#### CLI Usage Patterns
+```bash
+# Interactive mode (default)
+python Python_Examples_Agent/cli.py
+
+# One-shot query
+python Python_Examples_Agent/cli.py "What is the current time?"
+
+# With custom model and temperature
+python Python_Examples_Agent/cli.py -m claude-3-opus-20240229 -t 0.3 "Explain quantum computing"
+
+# Verbose output
+python Python_Examples_Agent/cli.py --verbose "Calculate 123 * 456"
+```
+
+#### CLI Class Structure
+- **`CopilotCLI`** class: Main CLI implementation
+  - `__init__(model, temperature, verbose)`: Initialize with configuration
+  - `initialize_agent()`: Set up the LangChain agent
+  - `query(message)`: Send query and get response
+  - `interactive_mode()`: Run continuous conversation loop
+  - `one_shot_mode(query)`: Execute single query
+  - `show_help()`: Display help information
+  - `show_history()`: Display conversation history
+
+### test_cli.py
+Comprehensive test suite for CLI functionality:
+- Initialization tests with default and custom parameters
+- Agent initialization success and failure scenarios
+- Query processing with success and error handling
+- Interactive mode command handling (`help`, `history`, `exit`)
+- Main entry point tests (arguments, API key validation, temperature validation)
+- Integration tests with mocked agent responses
+- Run with: `python Python_Examples_Agent/test_cli.py`
 
 ## Python RAG Agent (`Python_RAG_Agent/`)
 

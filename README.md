@@ -159,6 +159,12 @@ python Python_Examples_Agent/agent.py
 # Run all examples
 python Python_Examples_Agent/example.py
 
+# Run the CLI in interactive mode
+python Python_Examples_Agent/cli.py
+
+# Run a one-shot query with the CLI
+python Python_Examples_Agent/cli.py "What is the current time?"
+
 # Run the test suite
 python Python_Examples_Agent/test_agent.py
 ```
@@ -189,8 +195,10 @@ Lang_chain_Create_Agents/
 │   └── langchain_chat_models_prompt_templates.ipynb  # Learning-focused notebook
 ├── Python_Examples_Agent/                 # Python agent implementations
 │   ├── agent.py                                      # ReAct agent with tools
+│   ├── cli.py                                        # Command-line interface
 │   ├── example.py                                    # Usage examples
-│   └── test_agent.py                                 # Test suite
+│   ├── test_agent.py                                 # Agent test suite
+│   └── test_cli.py                                   # CLI test suite
 ├── .env                                   # Your API keys (do not commit!)
 ├── .env.example                           # Environment variable template
 ├── .gitignore                             # Git ignore rules
@@ -250,6 +258,54 @@ result = run_agent("What is the current time and what is 25 * 4?")
 print(result['messages'][-1].content)
 # Output: The current time is 2025-10-20 00:26:32, and 25 * 4 = 100.
 ```
+
+### 3. Copilot CLI (Command-Line Interface)
+
+The Copilot CLI provides a user-friendly command-line interface for interacting with the LangChain agent.
+
+#### CLI Features
+- **Interactive Mode**: Continuous conversation with the agent
+- **One-Shot Mode**: Execute single queries and exit
+- **Conversation History**: Track and review past interactions
+- **Custom Configuration**: Adjust model, temperature, and verbosity
+- **Built-in Commands**: Help, history, clear, and exit commands
+
+#### CLI Usage
+
+**Interactive Mode** (default):
+```bash
+# Start interactive session
+python Python_Examples_Agent/cli.py
+
+# Interactive mode with custom model
+python Python_Examples_Agent/cli.py --interactive --model claude-3-opus-20240229
+```
+
+**One-Shot Mode**:
+```bash
+# Single query
+python Python_Examples_Agent/cli.py "What is the current time?"
+
+# With verbose output
+python Python_Examples_Agent/cli.py --verbose "Calculate 123 * 456"
+
+# With custom temperature
+python Python_Examples_Agent/cli.py --temperature 0.3 "Explain quantum computing"
+```
+
+#### CLI Options
+- `-i, --interactive`: Force interactive mode
+- `-m, --model MODEL`: Specify Claude model (default: claude-3-5-sonnet-20241022)
+- `-t, --temperature`: Set temperature 0.0-1.0 (default: 0.7)
+- `-v, --verbose`: Enable verbose output
+- `--version`: Show version information
+- `-h, --help`: Display help message
+
+#### Interactive Commands
+- `help`: Show available commands and examples
+- `history`: Display conversation history
+- `clear`: Clear the screen
+- `exit`, `quit`, `q`: Exit the session
 
 ## Example Use Cases
 
