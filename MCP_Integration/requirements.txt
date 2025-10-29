@@ -1,0 +1,30 @@
+# LangChain Documentation Assistant Requirements
+
+# Core LangChain
+langchain>=0.3.13
+langchain-core>=0.3.30
+langchain-anthropic>=0.3.3
+langchain-community>=0.1.0
+langchain-huggingface>=0.1.0
+
+# Anthropic Claude API
+anthropic>=0.41.0
+
+# Vector Store & Embeddings
+faiss-cpu>=1.8.0
+sentence-transformers>=2.5.1
+
+# Web Scraping
+beautifulsoup4>=4.12.0
+requests>=2.32.0
+lxml>=4.9.0
+
+# Text Processing
+langchain-text-splitters>=0.3.0
+
+# Utilities
+python-dotenv>=1.0.0
+
+# Optional: For advanced scraping
+# selenium>=4.0.0
+# playwright>=1.40.0
