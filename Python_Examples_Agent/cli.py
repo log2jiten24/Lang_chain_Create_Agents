@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from agent import create_agent, run_agent
+from agent import create_agent
 
 
 class CopilotCLI:
@@ -41,7 +41,7 @@ class CopilotCLI:
         try:
             if self.verbose:
                 print(f"Initializing agent with model: {self.model}, temperature: {self.temperature}")
-            self.agent = create_agent()
+            self.agent = create_agent(model=self.model, temperature=self.temperature)
             return True
         except Exception as e:
             print(f"Error initializing agent: {e}", file=sys.stderr)
@@ -60,8 +60,12 @@ class CopilotCLI:
         try:
             if self.verbose:
                 print(f"\nProcessing query: {message}")
-                
-            result = run_agent(message)
+            
+            # Use the stored agent directly
+            if self.agent is None:
+                return "Error: Agent not initialized. Please initialize the agent first."
+            
+            result = self.agent.invoke({"messages": [("user", message)]})
             
             # Extract the final answer from the messages
             if 'messages' in result:

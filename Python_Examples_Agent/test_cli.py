@@ -58,24 +58,41 @@ class TestCopilotCLI(unittest.TestCase):
         result = self.cli.initialize_agent()
         self.assertFalse(result)
     
-    @patch('cli.run_agent')
-    def test_query_success(self, mock_run_agent):
+    @patch('cli.create_agent')
+    def test_query_success(self, mock_create_agent):
         """Test successful query processing."""
+        # Setup mock agent
+        mock_agent = MagicMock()
         mock_message = MagicMock()
         mock_message.content = "The current time is 2025-10-29 12:00:00"
-        mock_run_agent.return_value = {'messages': [mock_message]}
+        mock_agent.invoke.return_value = {'messages': [mock_message]}
+        mock_create_agent.return_value = mock_agent
+        
+        # Initialize agent
+        self.cli.initialize_agent()
         
         response = self.cli.query("What is the current time?")
         
         self.assertEqual(response, "The current time is 2025-10-29 12:00:00")
         self.assertEqual(len(self.cli.session_history), 1)
         self.assertEqual(self.cli.session_history[0]['query'], "What is the current time?")
+        mock_agent.invoke.assert_called_once()
     
-    @patch('cli.run_agent')
-    def test_query_error_handling(self, mock_run_agent):
+    def test_query_without_agent_initialization(self):
+        """Test query when agent is not initialized."""
+        response = self.cli.query("What is the current time?")
+        self.assertIn("Agent not initialized", response)
+    
+    @patch('cli.create_agent')
+    def test_query_error_handling(self, mock_create_agent):
         """Test query error handling."""
-        mock_run_agent.side_effect = Exception("Network error")
+        # Setup mock agent that raises an exception
+        mock_agent = MagicMock()
+        mock_agent.invoke.side_effect = Exception("Network error")
+        mock_create_agent.return_value = mock_agent
         
+        # Initialize agent
+        self.cli.initialize_agent()
         response = self.cli.query("What is the current time?")
         
         self.assertIn("Error processing query", response)
@@ -114,13 +131,14 @@ class TestCopilotCLI(unittest.TestCase):
             self.assertIn("exit", output)
     
     @patch('cli.create_agent')
-    @patch('cli.run_agent')
-    def test_one_shot_mode(self, mock_run_agent, mock_create_agent):
+    def test_one_shot_mode(self, mock_create_agent):
         """Test one-shot mode."""
-        mock_create_agent.return_value = MagicMock()
+        # Setup mock agent
+        mock_agent = MagicMock()
         mock_message = MagicMock()
         mock_message.content = "42"
-        mock_run_agent.return_value = {'messages': [mock_message]}
+        mock_agent.invoke.return_value = {'messages': [mock_message]}
+        mock_create_agent.return_value = mock_agent
         
         with patch('sys.stdout', new=StringIO()) as fake_output:
             exit_code = self.cli.one_shot_mode("Calculate 6 * 7")
@@ -199,9 +217,8 @@ class TestCLIIntegration(unittest.TestCase):
     
     @patch.dict(os.environ, {'ANTHROPIC_API_KEY': 'test_key'})
     @patch('cli.create_agent')
-    @patch('cli.run_agent')
     @patch('builtins.input', side_effect=['help', 'exit'])
-    def test_interactive_mode_help_command(self, mock_input, mock_run_agent, mock_create_agent):
+    def test_interactive_mode_help_command(self, mock_input, mock_create_agent):
         """Test interactive mode with help command."""
         mock_create_agent.return_value = MagicMock()
         
@@ -216,9 +233,8 @@ class TestCLIIntegration(unittest.TestCase):
     
     @patch.dict(os.environ, {'ANTHROPIC_API_KEY': 'test_key'})
     @patch('cli.create_agent')
-    @patch('cli.run_agent')
     @patch('builtins.input', side_effect=['history', 'exit'])
-    def test_interactive_mode_history_command(self, mock_input, mock_run_agent, mock_create_agent):
+    def test_interactive_mode_history_command(self, mock_input, mock_create_agent):
         """Test interactive mode with history command."""
         mock_create_agent.return_value = MagicMock()
         
@@ -233,9 +249,8 @@ class TestCLIIntegration(unittest.TestCase):
     
     @patch.dict(os.environ, {'ANTHROPIC_API_KEY': 'test_key'})
     @patch('cli.create_agent')
-    @patch('cli.run_agent')
     @patch('builtins.input', side_effect=['quit'])
-    def test_interactive_mode_quit_variations(self, mock_input, mock_run_agent, mock_create_agent):
+    def test_interactive_mode_quit_variations(self, mock_input, mock_create_agent):
         """Test interactive mode with different quit commands."""
         mock_create_agent.return_value = MagicMock()
         

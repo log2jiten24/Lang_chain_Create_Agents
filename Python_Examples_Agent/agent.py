@@ -63,9 +63,13 @@ def calculate(expression: str) -> str:
         return f"Error: {str(e)}"
 
 
-def create_agent():
+def create_agent(model="claude-3-5-sonnet-20241022", temperature=0.7):
     """
     Create and return a Langchain agent with Anthropic's Claude model.
+    
+    Args:
+        model (str): Claude model to use (default: "claude-3-5-sonnet-20241022")
+        temperature (float): Temperature for response generation (default: 0.7)
     
     Returns:
         Compiled graph agent ready to process requests.
@@ -77,9 +81,9 @@ def create_agent():
     
     # Initialize the Claude model
     llm = ChatAnthropic(
-        model="claude-3-5-sonnet-20241022",
+        model=model,
         anthropic_api_key=api_key,
-        temperature=0.7
+        temperature=temperature
     )
     
     # Define tools for the agent
